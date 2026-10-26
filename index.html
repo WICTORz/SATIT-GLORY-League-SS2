@@ -68,6 +68,23 @@ function renderTeamLogo(teamCode, teamName) {
     </span>
   `;
 }
+ .team-logo-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(36px, 8vw, 64px);
+  height: clamp(36px, 8vw, 64px);
+  flex: 0 0 auto;
+  overflow: hidden;
+}
+
+.team-logo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+${renderTeamLogo(teamCode, teamName)}
 const times=['18:34','19:05','19:37','20:09','20:40','21:13'], pageNames=[['home','หน้าแรก','⌂'],['standings','ตารางคะแนน','🏆'],['schedule','โปรแกรมการแข่งขัน','▦'],['leaders','ดาวซัลโวและสถิติ','⚽'],['teams','ทีม','♙'],['players','ลงทะเบียนนักเตะ','＋'],['stats','ข้อมูลนักเตะ','▣'],['fees','ค่าสนาม','฿'],['points','WICTORz Weekly Points','✦'],['contact','ติดต่อและชำระเงิน','✉'],['inbox','ข้อความเข้าส่วนตัว Admin','📩']];
 // Configure these two public client values after creating your Supabase project. Never put service_role/secret keys here.
 const SUPABASE_URL = 'https://hjoervdmvfpqzzcyioov.supabase.co';
