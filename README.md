@@ -1,4 +1,4 @@
-[Uploading index.html…]()
+[index.html](https://github.com/user-attachments/files/33941651/index.html)
 <!doctype html>
 <html lang="th">
 <head>
@@ -39,7 +39,7 @@ const teams=[['THAPHAE','ท่าแพ เอฟซี','#f0484d'],['REY','เ
 const weeks={1:[['THAPHAE',3,'REY',0],['ALPHA',3,'YOUTH',1],['BANG',2,'BUDDY',3],['PHOENIX',0,'CHANG',1],['TOTA',1,'HOME',0],['KORN',0,'CLASS',1]],2:[['BANG',5,'HOME',0],['THAPHAE',2,'BUDDY',0],['ALPHA',1,'CHANG',3],['PHOENIX',2,'TOTA',0],['KORN',4,'REY',1],['CLASS',3,'YOUTH',0]],3:[['HOME',0,'THAPHAE',1],['BANG',0,'PHOENIX',0],['REY',3,'BUDDY',2],['CLASS',1,'CHANG',1],['ALPHA',4,'TOTA',0],['KORN',5,'YOUTH',0]],4:[['ALPHA',5,'BANG',0],['CLASS',2,'TOTA',4],['REY',3,'HOME',0],['THAPHAE',0,'PHOENIX',1],['KORN',2,'BUDDY',0],['YOUTH',0,'CHANG',5]],5:[['BUDDY',1,'HOME',1],['KORN',2,'CHANG',2],['CLASS',0,'BANG',4],['REY',1,'PHOENIX',2],['THAPHAE',4,'ALPHA',0],['YOUTH',2,'TOTA',3]],6:[['HOME',1,'KORN',2],['PHOENIX',3,'BUDDY',1],['TOTA',1,'CHANG',2],['ALPHA',0,'REY',2],['BANG',5,'YOUTH',0],['THAPHAE',2,'CLASS',0]],7:[['CLASS',0,'PHOENIX',1],['BUDDY',2,'CHANG',1],['KORN',11,'ALPHA',0],['THAPHAE',1,'BANG',1],['REY',2,'TOTA',1],['YOUTH',2,'HOME',3]],8:[['REY',null,'CLASS',null],['KORN',null,'TOTA',null],['CHANG',null,'BANG',null],['BUDDY',null,'ALPHA',null],['HOME',null,'PHOENIX',null],['YOUTH',null,'THAPHAE',null]],9:[['TOTA',null,'BANG',null],['KORN',null,'PHOENIX',null],['BUDDY',null,'CLASS',null],['HOME',null,'ALPHA',null],['CHANG',null,'THAPHAE',null],['YOUTH',null,'REY',null]],10:[['PHOENIX',null,'ALPHA',null],['KORN',null,'BANG',null],['CHANG',null,'REY',null],['TOTA',null,'THAPHAE',null],['HOME',null,'CLASS',null],['BUDDY',null,'YOUTH',null]],11:[['BANG',null,'REY',null],['TOTA',null,'BUDDY',null],['KORN',null,'THAPHAE',null],['ALPHA',null,'CLASS',null],['HOME',null,'CHANG',null],['PHOENIX',null,'YOUTH',null]]};
 const times=['18:34','19:05','19:37','20:09','20:40','21:13'], pageNames=[['home','หน้าแรก','⌂'],['standings','ตารางคะแนน','🏆'],['schedule','โปรแกรมการแข่งขัน','▦'],['leaders','ดาวซัลโวและสถิติ','⚽'],['teams','ทีม','♙'],['players','ลงทะเบียนนักเตะ','＋'],['stats','ข้อมูลนักเตะ','▣'],['fees','ค่าสนาม','฿'],['points','WICTORz Weekly Points','✦'],['contact','ติดต่อและชำระเงิน','✉'],['inbox','ข้อความเข้าส่วนตัว Admin','📩']];
 // Configure these two public client values after creating your Supabase project. Never put service_role/secret keys here.
-const SUPABASE_URL = 'hjoervdmvfpqzzcyioov';
+const SUPABASE_URL = 'Yhttps://hjoervdmvfpqzzcyioov.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_tUoiJIARJiMDCkgep4K_EQ_1y7FYNWk';
 const cloudConfigured = /^https:\/\//.test(SUPABASE_URL) && !SUPABASE_URL.includes('YOUR_') && !!SUPABASE_ANON_KEY && !SUPABASE_ANON_KEY.includes('YOUR_');
 const cloud = cloudConfigured && window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } }) : null;
