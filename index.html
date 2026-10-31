@@ -56,7 +56,7 @@ const times=['18:34','19:05','19:37','20:09','20:40','21:13'], pageNames=[['home
 // Configure these two public client values after creating your Supabase project. Never put service_role/secret keys here.
 const SUPABASE_URL = 'https://hjoervdmvfpqzzcyioov.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_tUoiJIARJiMDCkgep4K_EQ_1y7FYNWk';
-const ADMIN_EMAILS = ['admin@satit.com','aek.ekawit@gmail.com']; // สิทธิ์อีเมลผู้ดูแลที่อนุญาต
+const ADMIN_EMAILS = ['admin@satit.com','aek.ekawit@gmail.com','nan@satitglory.com']; // สิทธิ์อีเมลผู้ดูแลที่อนุญาต
 // รหัสผ่านไม่เก็บใน HTML: ให้สร้าง/ตั้งรหัสผ่านของแต่ละบัญชีใน Supabase Auth และเพิ่ม user_id ลง league_admins
 const cloudConfigured = /^https:\/\//.test(SUPABASE_URL) && !SUPABASE_URL.includes('YOUR_') && !!SUPABASE_ANON_KEY && !SUPABASE_ANON_KEY.includes('YOUR_');
 const cloud = cloudConfigured && window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } }) : null;
