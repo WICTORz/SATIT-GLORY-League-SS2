@@ -139,7 +139,68 @@ function fixture(m,i,w){let [a,x,b,y]=m,done=x!==null&&y!==null,status=(w===8&&d
 function setStatus(w,i,v){state.statuses=state.statuses||{};state.statuses[w+'-'+i]=v;persist()}function setScore(w,i,k,v){weeks[w][i][k]=v===''?null:Number(v);persist()}
 function tableData(){let o={};teams.forEach(t=>o[t[0]]={id:t[0],P:0,W:0,D:0,L:0,GF:0,GA:0,PTS:0});Object.values(weeks).forEach(ms=>ms.forEach(([a,x,b,y])=>{if(x===null||y===null)return;let A=o[a],B=o[b];A.P++;B.P++;A.GF+=x;A.GA+=y;B.GF+=y;B.GA+=x;if(x>y){A.W++;B.L++;A.PTS+=3}else if(x<y){B.W++;A.L++;B.PTS+=3}else{A.D++;B.D++;A.PTS++;B.PTS++}}));return Object.values(o).sort((a,b)=>b.PTS-a.PTS||(b.GF-b.GA)-(a.GF-a.GA)||b.GF-a.GF)}
 function render(){document.body.classList.toggle('isadmin',state.admin);let ms=weeks[9];document.getElementById('todayMatches').innerHTML=ms.map((m,i)=>fixture(m,i,9)).join('')+`<div class="adminonly actions" style="margin-top:12px"><button class="btn primary sm" onclick="persist();toast('บันทึกผลและสถานะแล้ว')">บันทึกผลการแข่งขัน</button><button class="btn sm" onclick="announceResults()">☑ ประกาศผลเตือนผลการแข่งขัน</button></div><div class="card adminonly" style="margin-top:12px;padding:12px"><b>Note ส่วนตัว Admin</b><div id="matchNotes"></div><button class="btn sm" style="margin-top:8px" onclick="saveMatchNotes()">บันทึก Note</button></div>`;document.getElementById('matchNotes').innerHTML=Array.from({length:6},(_,i)=>`<div class="field"><label>บรรทัด ${i+1} · คู่ ${i+1}</label><input class="control match-note" value="${(state.matchNotes[i]||'').replaceAll('&','&amp;').replaceAll('\"','&quot;')}" placeholder="บันทึกส่วนตัวสำหรับคู่ ${i+1}"></div>`).join('');let standing=tableData();document.getElementById('miniStandings').innerHTML=standing.slice(0,12).map((r,i)=>`<div class="rankrow"><span class="ranknum">${String(i+1).padStart(2,'0')}</span>${crest(r.id)}<span>${team(r.id)[1]}</span><strong>${r.PTS} <small class="muted">pts</small></strong></div>`).join('');document.getElementById('standingsTable').innerHTML=`<thead><tr><th>#</th><th>ทีม</th><th>แข่ง</th><th>ชนะ</th><th>เสมอ</th><th>แพ้</th><th>ได้</th><th>เสีย</th><th>GD</th><th>แต้ม</th></tr></thead><tbody>${standing.map((r,i)=>`<tr class="${i===0?'r1':i<4?'rtop':i<8?'rqual':''}"><td class="rank">${i+1}</td><td><div class="teamcell">${crest(r.id)}${team(r.id)[1]}</div></td><td>${r.P}</td><td>${r.W}</td><td>${r.D}</td><td>${r.L}</td><td>${r.GF}</td><td>${r.GA}</td><td>${r.GF-r.GA>0?'+':''}${r.GF-r.GA}</td><td class="gold">${r.PTS}</td></tr>`).join('')}</tbody>`;document.getElementById('nextMatches').innerHTML=weeks[10].map((m,i)=>`<div class="mini"><div class="matchtop"><span>10/${i+1}</span><span>${times[i]}</span></div><div class="versus"><div class="club">${crest(m[0])}<span>${team(m[0])[0]}</span></div><span class="muted">VS</span><div class="club"><span>${team(m[2])[0]}</span>${crest(m[2])}</div></div></div>`).join('');document.getElementById('scheduleList').innerHTML=Object.keys(weeks).map(w=>`<section class="card" style="margin-bottom:12px"><div class="cardhead"><div><div class="eyebrow">${w<=8?'RESULTS':'FIXTURES'}</div><h2>Matchweek ${w} · ${w===8?'25 ตุลาคม':w===9?'1 พฤศจิกายน':w===10?'8 พฤศจิกายน':w===11?'15 พฤศจิกายน':'ฤดูกาล 2026'}</h2></div><span class="pill">${w<=8?'จบแล้ว':'6 คู่'}</span></div>${weeks[w].map((m,i)=>fixture(m,i,w)).join('')}</section>`).join('');document.getElementById('teamGrid').innerHTML='<div class="club-logos" style="grid-column:1/-1;display:flex;gap:12px;align-items:center;margin-bottom:8px"><img class="league-mark" src="images/Logo1.webp" alt="League logo"><img class="league-mark" src="images/Logo2.webp" alt="Championship logo"><b>SATIT GLORY LEAGUE · SS2</b></div>'+teams.map(t=>`<div class="player"><img class="teamlogo" src="images/${team(t[0])[3]}" alt="${t[1]}"><div style="flex:1;min-width:0"><b>${t[1]}</b><div class="footnote">${state.teamDescriptions[t[0]]||'Season 2'}</div>${state.admin?`<div style="display:flex;gap:5px;margin-top:6px"><input id="team-desc-${t[0]}" class="control" maxlength="50" value="${(state.teamDescriptions[t[0]]||'Season 2').replaceAll('&','&amp;').replaceAll('\"','&quot;')}" placeholder="คำอธิบายทีม ไม่เกิน 50 ตัว"><button class="btn sm" onclick="saveTeamDescription('${t[0]}')">บันทึก</button></div>`:''}</div></div>`).join('')+`<section class="card span12" style="grid-column:1/-1;margin-top:4px"><div class="eyebrow">LEAGUE HONOURS</div><h2 style="margin:5px 0 12px">🏆 เกียรติยศทีม</h2><div class="rankrow"><span class="ranknum">🥇</span><div><b>ชนะเลิศ Season 1</b><div class="footnote">เด็กนรกxไส้อั่วแม่แดง</div></div></div><div class="rankrow"><span class="ranknum">🥈</span><div><b>รองชนะเลิศ Season 1</b><div class="footnote">BEST FRIENDS</div></div></div></section>`;document.getElementById('noticeList').innerHTML=state.notices.map(n=>`<div class="notice"><b>${n.text}</b><div class="footnote">${n.time}</div></div>`).join('')||'<div class="empty">ไม่มีการแจ้งเตือน</div>';document.getElementById('badge').style.display=state.muted||!state.notices.length?'none':'block';document.getElementById('muteBtn').textContent=state.muted?'เปิดการแจ้งเตือน':'ปิดการแจ้งเตือน';document.getElementById('announcement').textContent=state.announcement||'ยินดีต้อนรับสู่ SATIT Glory League SS2 — อัปเดตโปรแกรม ผลการแข่งขัน และข่าวสารได้ที่นี่';document.getElementById('posterFrame').innerHTML=state.poster?`<img src="${state.poster}" alt="League poster">`:'<div class="empty">ยังไม่มีภาพโปสเตอร์<br><span class="footnote">Admin อัปโหลดภาพและเพิ่มคำบรรยายได้</span></div>';document.getElementById('posterCaption').textContent=state.posterText||'';document.getElementById('posterText').value=state.posterText||'';document.getElementById('announceInput').value=state.announcement||'';document.getElementById('rulesText').textContent=state.rules||'แข่งขันฟุตบอลชาย 7 คน ทุกวันอาทิตย์ · ครึ่งละ 14 นาที พักครึ่ง 1 นาที · สนามหญ้าเทียม โรงเรียนสาธิตมหาวิทยาลัยเชียงใหม่';document.getElementById('rulesInput').value=state.rules||'';document.getElementById('feeNote').textContent=state.feeNote||'ใบเหลือง 50 บาท · ใบแดง 150 บาท · ใบเหลืองสะสม 3 นัดติด แบน 1 นัด · ใบแดง แบน 2 นัด';document.getElementById('feeInput').value=state.feeNote||'';renderPlayers();renderFee();renderInbox();renderStats();renderAwards()}
-function renderFee(){let weeksH=Array.from({length:11},(_,i)=>`<th>W${i+1}</th>`).join('');document.getElementById('feesTable').innerHTML=`<thead><tr><th>ทีม</th>${weeksH}<th>รวมค้าง</th></tr></thead><tbody>${teams.map(t=>{let teamDebt=0,cells=Array.from({length:11},(_,i)=>{let key=t[0]+'-'+i,v=state.feeStatuses[key]||'ไม่ทราบ',cost=v==='ค้างชำระปกติ'?750:v==='ค้างชำระไม่มีช่างภาพ'?690:0;teamDebt+=cost;let cls=cost?' style="color:#ff777d;font-weight:800;background:#ff5b6214"':v==='จ่ายแล้ว'?' style="color:#20d889"':'';return `<td${cls}><select class="control" title="${v}" style="width:38px;min-width:0;padding:4px 1px;font-size:8px" ${state.admin?'':'disabled'} onchange="state.feeStatuses['${key}']=this.value;persist()"><option value="ไม่ทราบ" ${v==='ไม่ทราบ'?'selected':''}>?</option><option value="จ่ายแล้ว" ${v==='จ่ายแล้ว'?'selected':''}>✓</option><option value="ค้างชำระปกติ" ${v==='ค้างชำระปกติ'?'selected':''}>750</option><option value="ค้างชำระไม่มีช่างภาพ" ${v==='ค้างชำระไม่มีช่างภาพ'?'selected':''}>690</option></select></td>`}).join('');return `<tr><td>${t[1]}</td>${cells}<td style="color:${teamDebt?'#ff777d':'var(--muted)'};font-weight:800">${teamDebt?'฿'+teamDebt:'฿0'}</td></tr>`}).join('')}</tbody>`}
+ffunction renderFee(){
+  const weeksH = Array.from(
+    {length:11},
+    (_,i)=>`<th>W${i+1}</th>`
+  ).join('');
+
+  document.getElementById('feesTable').innerHTML = `
+    <thead>
+      <tr>
+        <th>ทีม</th>
+        ${weeksH}
+        <th>รวมค้าง</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${teams.map(t=>{
+        let teamDebt = 0;
+
+        const cells = Array.from({length:11},(_,i)=>{
+          const key = t[0]+'-'+i;
+          const v = state.feeStatuses[key] || 'ไม่ทราบ';
+
+          const cost =
+            v === 'ค้างชำระปกติ' ? 750 :
+            v === 'ค้างชำระไม่มีช่างภาพ' ? 690 : 0;
+
+          teamDebt += cost;
+
+          const cls =
+            v === 'จ่ายแล้ว' ? 'fee-paid' :
+            cost > 0 ? 'fee-overdue' : '';
+
+          return `
+            <td class="${cls}">
+              <select
+                class="control"
+                title="${v}"
+                ${state.admin ? '' : 'disabled'}
+                onchange="state.feeStatuses['${key}']=this.value;persist()"
+              >
+                <option value="ไม่ทราบ" ${v==='ไม่ทราบ'?'selected':''}>?</option>
+                <option value="จ่ายแล้ว" ${v==='จ่ายแล้ว'?'selected':''}>✓</option>
+                <option value="ค้างชำระปกติ" ${v==='ค้างชำระปกติ'?'selected':''}>750</option>
+                <option value="ค้างชำระไม่มีช่างภาพ" ${v==='ค้างชำระไม่มีช่างภาพ'?'selected':''}>690</option>
+              </select>
+            </td>
+          `;
+        }).join('');
+
+        return `
+          <tr>
+            <td>${t[1]}</td>
+            ${cells}
+            <td style="color:${teamDebt?'#ff777d':'var(--muted)'};font-weight:800">
+              ${teamDebt?'฿'+teamDebt:'฿0'}
+            </td>
+          </tr>
+        `;
+      }).join('')}
+    </tbody>
+  `;
+}
 function renderPlayers(){document.getElementById('playersLocked').style.display=state.admin?'none':'block';document.getElementById('playerCard').style.display=state.admin?'block':'none';document.getElementById('playerCount').textContent=state.players.length+' คน';let html=state.players.map((p,i)=>`<div class="player"> <div class="avatar">${p.name.slice(0,1)}</div><div style="flex:1"><b>${p.name}</b><div class="footnote">${p.team} · ${p.position} · ID ${p.id||('Player '+(i+1))}</div></div><button class="btn sm" onclick="state.players.splice(${i},1);persist()">ลบ</button></div>`).join('');document.getElementById('playerList').innerHTML=html||'<div class="empty">ยังไม่มีรายชื่อนักเตะในทะเบียน</div>';['statPlayer','awardPlayer'].forEach(id=>{let el=document.getElementById(id);if(el)el.innerHTML=state.players.map(p=>`<option>${p.name} · ${p.team}</option>`).join('')});['statWeek','awardWeek'].forEach(id=>{let el=document.getElementById(id);if(el)el.innerHTML=Array.from({length:11},(_,i)=>`<option value="${i+1}">Matchweek ${i+1}</option>`).join('')})}
 function renderStats(){document.getElementById('statList').innerHTML=state.stats.length?state.stats.map(s=>`<div class="rankrow"><span class="tag">W${s.week}</span><span>${s.name}</span><span class="muted">${s.team} · ${s.position||'ไม่ระบุ'}</span><strong>${s.goals} G · ${s.assists} A · ${s.points} pts</strong></div>`).join(''):'<div class="empty">ยังไม่มีข้อมูลสถิติ</div>'}function renderAwards(){let w=document.getElementById('publicAwardWeek')?.value||document.getElementById('awardWeek')?.value||'1';let list=state.awards.filter(a=>String(a.week)===String(w));let sorted=[...list].sort((a,b)=>(+b.rating)-(+a.rating));document.getElementById('awardsList').innerHTML=list.length?`<div class="winnerbox"><div class="eyebrow">WEEK ${w} WINNER</div><b>🏆 Winner Player of The Week</b><div style="margin-top:8px">${sorted[0].name} · ${sorted[0].position||'—'} <b style="float:right">${sorted[0].rating}/10</b></div></div>`+list.map((a,i)=>`<div class="rankrow"><span class="ranknum">${i+1}</span><b>${a.name}</b><span class="muted">${a.position||'—'}</span><strong>${a.rating}/10</strong></div>`).join(''):'<div class="empty">ยังไม่มีรายชื่อสัปดาห์นี้</div>';let aw=document.getElementById('awardWeek');let holder=document.getElementById('awardRows');if(aw&&holder&&!holder.dataset.ready){holder.innerHTML=Array.from({length:8},(_,i)=>`<div class="awardline"><span>${i+1}</span><select class="control award-player"><option value="">เลือกนักเตะ</option>${state.players.map(p=>`<option value="${p.name}">${p.name} · ${p.team}</option>`).join('')}</select><select class="control award-position"><option>Goalkeeper</option><option>Centre-back</option><option>Libero</option><option>Full-Back Right</option><option>Full-Back Left</option><option>Defensive Midfielder</option><option>Midfielder</option><option>Attacking Left</option><option>Attacking Right</option><option>Centre Forward</option><option>Target Man</option><option>Shadow Striker</option><option>Deep-lying Forward</option></select><input class="control award-rating" type="number" min="4" max="10" step=".1" placeholder="คะแนน"></div>`).join('');holder.dataset.ready='1'}loadAwardWeek()}
 function renderInbox(){document.getElementById('inboxLocked').style.display=state.admin?'none':'block';document.getElementById('inboxList').innerHTML=state.messages.length?state.messages.map((m,i)=>`<div class="match"><div class="matchtop"><span>${m.type} · ${m.time}</span>${state.admin?`<button class="btn sm" onclick="deleteInboxMessage(${i})">ลบ</button>`:''}</div><b>${m.name}</b><p>${m.text}</p></div>`).join(''):'<div class="empty">ยังไม่มีข้อความเข้า</div>'}
